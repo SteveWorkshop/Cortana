@@ -1,0 +1,36 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory app:title="通用">
+
+        <EditTextPreference
+            app:key="signature"
+            app:title="API签名"
+            app:summary="使用在线模型时必填"
+            app:useSimpleSummaryProvider="true" />
+
+        <ListPreference
+            app:defaultValue="gemini-1.5-flash"
+            app:entries="@array/model_entries"
+            app:entryValues="@array/model_values"
+            app:key="model_type"
+            app:title="选择要使用的模型"
+            app:useSimpleSummaryProvider="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="隐私与安全性">
+
+        <SwitchPreferenceCompat
+            app:key="local_produce_only"
+            app:title="使用本地模型（暂未开放）"
+            app:summary="允许在未连接互联网的情况下在您的本地计算机处理数据，此功能对计算机的硬件配置有一定的要求，因而并非所有设备都支持"/>
+
+        <SwitchPreferenceCompat
+            app:key="in_private_mode"
+            app:summaryOff="您的对话历史记录将被存储在本地计算机和Google服务器（如果您使用在线API）上"
+            app:summaryOn="当您退出应用程序时您的对话会被清除，但如果您使用在线模型，Google仍然能够访问您的使用记录"
+            app:title="InPrivate模式（暂未开放）" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
