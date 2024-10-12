@@ -1,4 +1,4 @@
-package com.example.cortana.network;
+package com.example.cortana.http;
 
 import com.google.ai.client.generativeai.GenerativeModel;
 import com.google.ai.client.generativeai.java.GenerativeModelFutures;

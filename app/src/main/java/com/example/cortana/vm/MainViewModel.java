@@ -13,8 +13,8 @@ import com.example.cortana.BaseApplication;
 import com.example.cortana.config.DBConfig;
 import com.example.cortana.dao.MessageDao;
 import com.example.cortana.entity.Message;
-import com.example.cortana.network.CommonLlmApi;
-import com.example.cortana.network.GeminiApi;
+import com.example.cortana.http.CommonLlmApi;
+import com.example.cortana.http.GeminiApi;
 import com.google.ai.client.generativeai.type.GenerateContentResponse;
 import com.google.common.util.concurrent.FutureCallback;
 
