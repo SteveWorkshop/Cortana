@@ -57,16 +57,33 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 <!--      隐藏测试用例      -->
-            <TextView
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:visibility="gone"
-                android:id="@+id/txb_demo_answer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:id="@+id/prog_loading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:indeterminate="true" />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/message_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+            <TextView
+                android:visibility="gone"
+                android:gravity="center"
+                android:id="@+id/txb_hint_area"
+                android:text="正在思考中。。。"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txb_error_area"
+                android:gravity="center"
+                android:text="网络不通畅，请稍后再试/(ㄒoㄒ)/~~"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -72,32 +73,8 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 viewModel.sendChatAsync(question);
+                binding.txbMySay.setText("");
             }
-
-//            GenerativeModel gm = new GenerativeModel("gemini-1.5-flash", apiKey);
-//            GenerativeModelFutures model = GenerativeModelFutures.from(gm);
-//
-//            Content content = new Content.Builder().addText("写一篇关于Windows历史的总结").build();//实际项目由用户输入
-//            Executor executor=new ThreadPoolExecutor(5,10,60, TimeUnit.SECONDS,new LinkedBlockingDeque<>());
-//            ListenableFuture<GenerateContentResponse> response = model.generateContent(content);
-//            Futures.addCallback(response, new FutureCallback<GenerateContentResponse>() {
-//                @Override
-//                public void onSuccess(GenerateContentResponse result) {
-//                    String resultText = result.getText();
-//                    System.out.println(resultText);
-//                    runOnUiThread(()->{
-//                        binding.txbDemoAnswer.setText(resultText);
-//                    });
-//                }
-//
-//                @Override
-//                public void onFailure(Throwable t) {
-//                    t.printStackTrace();
-//                    runOnUiThread(()->{
-//                        Toast.makeText(MainActivity.this, "本程序需要互联网链接，你懂的", Toast.LENGTH_SHORT).show();
-//                    });
-//                }
-//            }, executor);
         });
         initView();
     }
@@ -133,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         {
             //要求用户设置
             //todo：如果是本地模型那么不需要跳转
+            //todo：这一段移入viewmodel实现
             MaterialAlertDialogBuilder builder=new MaterialAlertDialogBuilder(this);
             builder.setCancelable(false);
             builder.setTitle("未设置API Key");
@@ -158,6 +136,49 @@ public class MainActivity extends AppCompatActivity {
         binding.messageList.setLayoutManager(layoutManager);
         binding.messageList.setAdapter(adapter);
         //数据绑定
-        viewModel.getAllData().observe(this, o -> adapter.submitList((PagedList<Message>) o));
+        viewModel.getAllData().observe(this, o -> {
+            adapter.submitList((PagedList<Message>) o);
+            binding.messageList.scrollToPosition(binding.messageList.getAdapter().getItemCount()-1);
+        });
+        viewModel.getLoading().observe(this,o->{
+            boolean loading = o.booleanValue();
+            switchLoadingStatus(loading);
+        });
+        viewModel.getFaliure().observe(this,o->{
+            boolean error=o.booleanValue();
+            System.out.println("*********************"+error);
+            switchError(error);
+        });
+    }
+
+    private void switchLoadingStatus(boolean loading)
+    {
+        if(loading)
+        {
+            binding.progLoading.setVisibility(View.VISIBLE);
+            binding.txbHintArea.setVisibility(View.VISIBLE);
+        }
+        else{
+            binding.progLoading.setVisibility(View.GONE);
+            binding.txbHintArea.setVisibility(View.GONE);
+        }
+    }
+
+    private void switchError(boolean failure)
+    {
+        if(failure){
+            //弹对话框
+            MaterialAlertDialogBuilder builder=new MaterialAlertDialogBuilder(this);
+            builder.setTitle("OOPS！o(〒﹏〒)o");
+            builder.setMessage("网络故障，请检查网络，本程序需要互联网连接，你懂的");
+            builder.setPositiveButton("确定",(dialog, which) -> {
+                //todo:重试
+            });
+            builder.show();
+            binding.txbErrorArea.setVisibility(View.VISIBLE);
+        }
+        else{
+            binding.txbErrorArea.setVisibility(View.GONE);
+        }
     }
 }
