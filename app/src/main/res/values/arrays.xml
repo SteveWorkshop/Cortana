@@ -7,4 +7,14 @@
     <string-array name="model_values">
         <item>gemini-1.5-flash</item>
     </string-array>
+
+    <string-array name="mode_entries">
+        <item>搜索引擎模式</item>
+        <item>真人聊天模式</item>
+    </string-array>
+
+    <string-array name="mode_values">
+        <item>mode_search_engine</item>
+        <item>mode_chat</item>
+    </string-array>
 </resources>

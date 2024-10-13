@@ -94,7 +94,7 @@ public class MainViewModel extends BaseViewModel{
             public void onSuccess(GenerateContentResponse result) {
                 loading.postValue(false);
                 //插入回复消息
-                System.out.println("????????????????????????????????????????????????");
+                //System.out.println("????????????????????????????????????????????????");
                 Message recvMessage=new Message();
                 recvMessage.setType(Message.MESSAGE_RECEIVED);
                 String resultText = result.getText();
@@ -104,8 +104,13 @@ public class MainViewModel extends BaseViewModel{
 
             @Override
             public void onFailure(Throwable t) {
-                System.out.println("=====================================");
+                //System.out.println("=====================================");
                 t.printStackTrace();
+                //插入降级消息
+                Message fallbackMessage=new Message();
+                fallbackMessage.setType(Message.MESSAGE_RECEIVED);
+                fallbackMessage.setTextContent(Message.DEFAULT_FALLBACK_ANSWER);
+                messageDao.insertMessage(fallbackMessage);
                 loading.postValue(false);
                 faliure.postValue(true);
                 try {

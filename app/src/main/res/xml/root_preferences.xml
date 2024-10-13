@@ -18,6 +18,16 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="效果与模式">
+        <ListPreference
+            app:defaultValue="mode_search_engine"
+            app:entries="@array/mode_entries"
+            app:entryValues="@array/mode_values"
+            app:key="mode"
+            app:title="选择聊天模式"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="隐私与安全性">
 
         <SwitchPreferenceCompat

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.speech.tts.TextToSpeech;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -47,8 +48,11 @@ public class MainActivity extends AppCompatActivity {
 
     private MainViewModel viewModel;
 
+    //todo: move these checks
     private String apiKey;
     private String modelType;
+
+    private TextToSpeech mSpeech;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         });
         viewModel.getFaliure().observe(this,o->{
             boolean error=o.booleanValue();
-            System.out.println("*********************"+error);
+            //System.out.println("*********************"+error);
             switchError(error);
         });
     }
