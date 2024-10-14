@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +24,12 @@ import com.example.cortana.entity.Message;
 import com.example.cortana.util.RandomUtil;
 import com.example.cortana.util.TTSUtil;
 
+import org.commonmark.node.Node;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import io.noties.markwon.Markwon;
 
 public class MessageAdapter extends PagedListAdapter<Message,MessageAdapter.ViewHolder> {
 
@@ -93,18 +98,26 @@ public class MessageAdapter extends PagedListAdapter<Message,MessageAdapter.View
             String strDateFormat = "yyyy/MM/dd HH:mm";
             SimpleDateFormat spf=new SimpleDateFormat(strDateFormat);
 
+            Markwon markwon=Markwon.create(holder.itemView.getContext());
+            String content = message.getTextContent();
+            Node node=markwon.parse(content);
+            Spanned printOut=markwon.render(node);
+
             if (message.getType()==Message.MESSAGE_RECEIVED)
             {
                 holder.leftLayout.setVisibility(View.VISIBLE);
                 holder.rightLayout.setVisibility(View.GONE);
-                //todo: support markdown format
-                holder.leftMessage.setText(message.getTextContent());
+
+                //holder.leftMessage.setText(message.getTextContent());
+                markwon.setParsedMarkdown(holder.leftMessage,printOut);
                 holder.recvTime.setText(spf.format(new Date(message.getCreateTime())));
             }
             else{
                 holder.leftLayout.setVisibility(View.GONE);
                 holder.rightLayout.setVisibility(View.VISIBLE);
-                holder.rightMessage.setText(message.getTextContent());
+
+                //holder.rightMessage.setText(message.getTextContent());
+                markwon.setParsedMarkdown(holder.rightMessage,printOut);
                 holder.sendTime.setText(spf.format(new Date(message.getCreateTime())));
             }
 

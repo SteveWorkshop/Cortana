@@ -22,6 +22,7 @@ public class TTSUtil {
 
     public TTSUtil(Context context)
     {
+        //oninit有问题！！！！！！！！
         TextToSpeech tts=new TextToSpeech(context, status -> {
             if (status == TextToSpeech.SUCCESS){
                 ttsErrorStatus=TextToSpeech.SUCCESS;
@@ -37,19 +38,29 @@ public class TTSUtil {
             Set<Locale> languages = tts.getAvailableLanguages();
             if (languages == null||languages.isEmpty())
             {
+                Log.e(TAG, "TTSUtil: tts对象不存在"+languages);
                 ttsErrorStatus=TextToSpeech.LANG_NOT_SUPPORTED;
             }
             else if(languages.contains(Locale.CHINESE)){
+                Log.d(TAG, "TTSUtil: 中文");
                 ttsErrorStatus=tts.setLanguage(Locale.CHINESE);
             }
             else if(languages.contains(Locale.SIMPLIFIED_CHINESE)){
+                Log.d(TAG, "TTSUtil: 中文2");
                 ttsErrorStatus=tts.setLanguage(Locale.SIMPLIFIED_CHINESE);
             }
             else if(languages.contains(Locale.TRADITIONAL_CHINESE))
             {
+                Log.d(TAG, "TTSUtil: 中文3");
                 ttsErrorStatus=tts.setLanguage(Locale.TRADITIONAL_CHINESE);
             }
+            else if (languages.contains(Locale.ENGLISH))
+            {
+                Log.d(TAG, "TTSUtil: 英语");
+                ttsErrorStatus=tts.setLanguage(Locale.ENGLISH);
+            }
             else{
+                Log.e(TAG, "TTSUtil: 没有语言适配");
                 ttsErrorStatus=TextToSpeech.LANG_NOT_SUPPORTED;
             }
         }
